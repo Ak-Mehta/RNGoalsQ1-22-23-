@@ -9,12 +9,15 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import NormalAnime from './NormalAnime';
+import Pan from './Pan';
 
 const App = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Hello Anime!</Text>
+    <View style={{flex: 1}}>
+      {/* <NormalAnime /> */}
+      <Pan />
     </View>
   );
 };
