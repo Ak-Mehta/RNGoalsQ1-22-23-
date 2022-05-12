@@ -9,13 +9,15 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ThemeProvider} from '@shopify/restyle';
+import theme from './styles/theme';
+import Welcome from './src/Welcome';
 
 const App = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Hello Anime!</Text>
-    </View>
+    <ThemeProvider theme={theme}>
+      <Welcome />
+    </ThemeProvider>
   );
 };
 
