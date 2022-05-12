@@ -10,6 +10,8 @@
 
 import React from 'react';
 import {View} from 'react-native';
+import FullAnime from './FullAnime';
+
 import NormalAnime from './NormalAnime';
 import Pan from './Pan';
 
@@ -17,7 +19,8 @@ const App = () => {
   return (
     <View style={{flex: 1}}>
       {/* <NormalAnime /> */}
-      <Pan />
+      <FullAnime />
+      {/* <Pan /> */}
     </View>
   );
 };
