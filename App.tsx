@@ -13,8 +13,18 @@ import {Alert, Text, View} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import {requestUserPermission} from './src/notificationServices';
 import messaging, {firebase} from '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
+import PushNotification, {Importance} from 'react-native-push-notification';
 import {FirebaseMessagingTypes} from '@react-native-firebase/messaging';
+
+PushNotification.createChannel(
+  {
+    channelId: 'akk', // (required)
+    channelName: 'akk', // (required)
+    importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+    vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+  },
+  created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
 
 const App = () => {
   messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -23,30 +33,33 @@ const App = () => {
   useEffect(() => {
     requestUserPermission();
 
-    firebase.messaging().onMessage(remoteMessage => {
-      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
-      // PushNotification.localNotification({
-      //   channelId: 'akk',
-      //   title: remoteMessage.notification?.title,
-      //   message: remoteMessage.notification?.body!,
-      // });
-      showNotification(remoteMessage.notification!);
-    });
+    const unsubscribe = firebase
+      .messaging()
+      .onMessage(async (remoteMessage: any) => {
+        // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+        console.log('Message handled in foreground!', remoteMessage);
+        PushNotification.localNotification({
+          channelId: 'akk',
+          title: remoteMessage.notification?.title,
+          message: remoteMessage.notification?.body!,
+        });
+        // showNotification(remoteMessage.notification!);
+      });
+    return unsubscribe;
   }, []);
-  const showNotification = (
-    notification: FirebaseMessagingTypes.Notification,
-  ) => {
-    PushNotification.localNotification({
-      channelId: 'ak',
-      title: notification.title,
-      message: notification.body!,
-    });
-  };
+  // const showNotification = (
+  //   notification: FirebaseMessagingTypes.Notification,
+  // ) => {
+  //   PushNotification.localNotification({
+  //     channelId: 'ak',
+  //     title: notification.title,
+  //     message: notification.body!,
+  //   });
+  // };
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <FlashMessage position="top" />
-      <Text>Hello Anime!</Text>
+      <Text>Welcome to RN-PushNotification!</Text>
     </View>
   );
 };
