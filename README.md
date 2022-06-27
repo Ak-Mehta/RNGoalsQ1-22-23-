@@ -5,3 +5,4 @@
 2. reanimated
 3. shopify-restyle
 4. firebasenotification
+5. deeplinking
